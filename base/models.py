@@ -116,11 +116,12 @@ validate_image = FileValidator(min_size=10,
 
 
 def get_upload_to(instance, filename):
-    """File will be uploaded to MERDIA_ROOT/user_id<user.id> or all/class_name_plural//%Y/%m/%d/uuid4
+    """File will be uploaded to MERDIA_ROOT/user_id<user.id> or all/class_name_plural/%Y/%m/%d/uuid4
 
     :param instance:
     :param filename:
     :return:
+    We change name of downloaded file to uuid4.
     """
     try:
         user = instance.user
