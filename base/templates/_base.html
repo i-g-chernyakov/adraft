@@ -1,4 +1,5 @@
 {% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -28,5 +29,26 @@
 <body>
     {% block body_start %}{% endblock %}
 
+    {% block body_authentication %}
+    {% if request.user.is_authenticated %}
+         {{ request.user.get_full_name|deafult:request.user.username }}
+    {% else %}
+         <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+    {% endblock %}
+
+    {% block body_messages %}
+       {% if messages %}
+          {% for message in messages %}
+              {{ message }}
+          {% endfor %}
+       {% endif %}
+    {% endblock %}
+
+    {% block body_contents_before %}{% endblock %}
+    {% block body_contents %}{% endblock %}
+    {% block body_contents_after %}{% endblock %}
+
+    {% block body_js_bottom %}{% endblock %}
 </body>
 </html>

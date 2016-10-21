@@ -1,5 +1,6 @@
 from os import path
 from uuid import uuid4
+import re
 
 from django.conf import settings
 from django.core.validators import RegexValidator
@@ -8,11 +9,13 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.deconstruct import deconstructible
 from django.template.defaultfilters import filesizeformat
-import magic
+from django.core.cache import cache
+
 from mptt.models import MPTTModel, TreeForeignKey
+import magic
+import markups
 
-from .utils import get_instance_cls_name_plural
-
+from .utils import get_class_name_plural
 
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL')
 
@@ -95,6 +98,8 @@ validate_attachment = FileValidator(min_size=10,
                                         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                                         'application/x-dvi',
                                         'application/x-latex',
+                                        'application/zip',
+                                        'application/gzip',
                                         'text/csv',
                                         'text/html',
                                         'text/plain',
@@ -118,10 +123,10 @@ validate_image = FileValidator(min_size=10,
 def get_upload_to(instance, filename):
     """File will be uploaded to MERDIA_ROOT/user_id<user.id> or all/class_name_plural/%Y/%m/%d/uuid4
 
+    We change name of downloaded file to uuid4.
     :param instance:
     :param filename:
-    :return:
-    We change name of downloaded file to uuid4.
+    :return: path to upload file
     """
     try:
         user = instance.user
@@ -131,7 +136,7 @@ def get_upload_to(instance, filename):
         subfolder = 'user_id{0}'.format(user.id)
 
     return path.join(subfolder,
-                     get_instance_cls_name_plural(instance),
+                     get_class_name_plural(instance),
                      '%Y/%m/%d',
                      str(uuid4()),
                      path.splitext(filename)[-1])
@@ -147,18 +152,92 @@ class Note(models.Model):
         verbose_name = _('Note')
         verbose_name_plural = _('Notes')
 
+    def save(self, *args, **kwargs):
+        cache_key = self.get_cache_key()
+        if cache.get(cache_key) is not None:
+            self.set_cache()
+        super(Note, self).save(*args, **kwargs)
+
+    @staticmethod
+    def get_markup_instance():
+        return markups.ReStructuredTextMarkup()
+
+    @property
+    def markup(self):
+        if not hasattr(self, '__markup_instance'):
+            self.__markup_instance = Note.get_markup_instance()
+        return self.__markup_instance
+
+    def convert_to_html(self):
+        html = self.markup.convert(self.text).get_document_body()
+        html = self._sanitize(html)
+        return html
+
+    @property
+    def html(self):
+        if self.pk:
+            return self.get_cached_html()
+        else:
+            return self.convert_to_html()
+
+    @property
+    def stylesheet(self):
+        return self.markup.get_stylesheet()
+
+    @property
+    def javascript(self):
+        return self.markup.get_javascript()
+
+    @property
+    def title(self):
+        return self.markup.get_document_title()
+
+    def _sanitize(self, html):
+        """ Remove all scripts from html
+
+        :param html:
+        :return: html without scripts
+        """
+        return re.sub(r'<script.*?</script>', '', html, flags=re.MULTILINE)
+
+    def get_cache_key(self):
+        return "{0}_{1}".format(self._meta.db_table, self.pk)
+
+    def set_cache(self):
+        """Convert text to html,set cache and return html
+
+        :return: html
+        """
+        cache_key = self.get_cache_key()
+        html = self.convert_to_html()
+        cache.set(cache_key, html)
+        return html
+
+    def get_cache(self):
+        """return html from cache
+
+        If no html in cache then set cache and return
+
+        :return: html from cache
+        """
+        cache_key = self.get_cache_key()
+        cached_html = cache.get(cache_key)
+        if cached_html is None:
+            cached_html = self.set_cache()
+        return cached_html
+
 
 class Attachment(models.Model):
     def upload_to(self, filename):
         """Attachment will be uploaded to MEDIA_ROOT/attachments/user_<id>/<filename>
 
-        :return:
+        :return: path to attachment file
         """
         return 'attachments/user_{0}/{1}.{2}'.format(self.user.id, uuid4(), path.splitext(filename)[-1])
 
-    note = models.ForeignKey(Note, related_name='attachment_note')
     user = models.ForeignKey(USER_MODEL, related_name='attachment_user', verbose_name=_('Attachment'))
     title = models.CharField(verbose_name=_('Title'), max_length=100)
+    description = models.CharField(verbose_name=_('Description'), max_length=255)
     file = models.FileField(upload_to=get_upload_to, max_length=150, validators=[validate_attachment])
     original_filename = models.CharField()
 
@@ -167,7 +246,7 @@ class Attachment(models.Model):
         verbose_name_plural = _('Attachments')
 
     def __str__(self):
-        return path.basename(self.file.name)
+        return self.title
 
     def name(self):
         return self.title
@@ -194,17 +273,16 @@ class Image(models.Model):
         return self.title
 
 
-class Catalog(MPTTModel):
-    title = models.CharField(verbose_name=_('Title'), max_length=50)
-    sequence_number = models.PositiveIntegerField(verbose_name=_('Sequence number'),
-                                                  default=0)
-    hint = models.CharField(verbose_name=_('Hint'), max_length=200, blank=True, null=True)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
-    note = models.ForeignKey(Note, verbose_name=_('Note'), related_name='catalog_note')
-
-    class Meta:
-        verbose_name = _('Catalog')
-        verbose_name_plural = _('Catalogs')
-
-    class MPTTMeta:
-        ordering_insertion_by = ['sequence_number']
+# class Catalog(MPTTModel):
+#     title = models.CharField(verbose_name=_('Title'), max_length=50)
+#     sequence_number = models.PositiveIntegerField(verbose_name=_('Sequence number'), default=0)
+#     hint = models.CharField(verbose_name=_('Hint'), max_length=200, blank=True, null=True)
+#     parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
+#     note = models.ForeignKey(Note, verbose_name=_('Note'), related_name='catalog_note')
+#
+#     class Meta:
+#         verbose_name = _('Catalog')
+#         verbose_name_plural = _('Catalogs')
+#
+#     class MPTTMeta:
+#         ordering_insertion_by = ['sequence_number']
