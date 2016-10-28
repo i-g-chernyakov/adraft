@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'adraft',
         'USER': 'adraft',
-        'PASSWORD': 'adraft',
+        'PASSWORD': '123456',
         'HOST': '',
         'PORT': '',
     }
@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'Asia/Krasnoyarsk'
+TIME_ZONE = 'Asia/Novosibirsk'
 
 USE_I18N = True
 
@@ -130,11 +130,11 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 # email
-EMAIL_HOST = '10.22.168.124'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'postmaster@mail.zkp2268.local'
-EMAIL_HOST_PASSWORD = '0okm,lp-'
-EMAIL_SSL_CERTFILE = '/home/kamen/zkp22it/iRedMail.crt'
-EMAIL_SSL_KEYFILE = '/home/kamen/zkp22it/iRedMail.key'
-DEFAULT_FROM_EMAIL = 'postmaster@mail.zkp2268.local'
+# EMAIL_HOST = '10.22.168.124'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'postmaster@mail.zkp2268.local'
+# EMAIL_HOST_PASSWORD = '0okm,lp-'
+# EMAIL_SSL_CERTFILE = '/home/kamen/zkp22it/iRedMail.crt'
+# EMAIL_SSL_KEYFILE = '/home/kamen/zkp22it/iRedMail.key'
+# DEFAULT_FROM_EMAIL = 'postmaster@mail.zkp2268.local'

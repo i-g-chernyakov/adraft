@@ -3,7 +3,6 @@ from uuid import uuid4
 import re
 
 from django.conf import settings
-from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -11,7 +10,6 @@ from django.utils.deconstruct import deconstructible
 from django.template.defaultfilters import filesizeformat
 from django.core.cache import cache
 
-from mptt.models import MPTTModel, TreeForeignKey
 import magic
 import markups
 
