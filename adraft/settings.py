@@ -77,12 +77,8 @@ WSGI_APPLICATION = 'adraft.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'adraft',
-        'USER': 'adraft',
-        'PASSWORD': '123456',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -138,3 +134,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # EMAIL_SSL_CERTFILE = '/home/kamen/zkp22it/iRedMail.crt'
 # EMAIL_SSL_KEYFILE = '/home/kamen/zkp22it/iRedMail.key'
 # DEFAULT_FROM_EMAIL = 'postmaster@mail.zkp2268.local'
+
+
+try:
+    from .local_settings import *
+except:
+    pass

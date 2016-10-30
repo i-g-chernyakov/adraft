@@ -1,3 +1,5 @@
 .idea
+conf
+media
 __pycache__
 nohup.out
