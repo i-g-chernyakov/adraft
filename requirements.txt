@@ -1,4 +1,4 @@
-Django==1.10.2
+Django==1.10.3
 django-mptt==0.8.6
 docutils==0.12
 Markdown==2.6.7

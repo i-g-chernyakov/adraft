@@ -1,5 +1,6 @@
 .idea
 conf
 media
+adraft/local_settings.py
 __pycache__
 nohup.out
