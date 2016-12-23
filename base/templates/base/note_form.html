@@ -3,6 +3,8 @@
 {% load staticfiles %}
 
 {% block head_stylesheets_extra %}
+    <link rel="stylesheet" type="text/css" href="{% static 'codemirror/lib/codemirror.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'codemirror/theme/mbo.css' %}">
     {{ form.media.css }}
     <style>
         #quickref {
@@ -14,6 +16,9 @@
 {% endblock %}
 
 {% block head_scripts_extra %}
+    <script type="text/javascript" src="{% static 'codemirror/lib/codemirror.js' %}"></script>
+    <script type="text/javascript" src="{% static 'codemirror/addon/mode/overlay.js' %}"></script>
+    <script type="text/javascript" src="{% static 'codemirror/mode/rst/rst.js' %}"></script>
     {{ form.media.js }}
 {% endblock%}
 

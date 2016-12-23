@@ -6,3 +6,10 @@
 {% block navbar_header %}
 <a href="{% url 'base:home' %}" class="navbar-brand">{% trans "My Notes" %}</a>
 {% endblock %}
+
+{% block body_script_bottom %
+<script src="{% static "underscore/underscore.js" %}"></script>
+<script src="{% static "angular/angular.js" %}"></script>
+<script src="{% static "angular-resource/angular-resource.js" %}"></script>
+<script src="{% static "js/script.js" %}"></script>
+{% endblock body_script_bottom %}

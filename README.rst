@@ -18,3 +18,15 @@ Authors
 
 
 
+2. Install Bower + Grunt
+
+		npm install -g grunt-cli bower
+
+3. Install Assets
+
+        npm install
+        bower install
+
+4. Compile Assets
+
+        grunt

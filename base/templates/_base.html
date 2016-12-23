@@ -13,21 +13,21 @@
     <meta name="keywords" content="{% block keywords %}reStructuredText,page,notepad,HTML,organize,collect{% endblock %}">
     <title>{% block head_title %}A drafter{% endblock %}</title>
     {% block head_icon %}
-    <link rel="icon" type="image/x-icon" href="{% static '/favicon.ico' %}">
-    <link rel="shortcut icon" type="image/x-icon" href="{% static '/shortcut.ico' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'shortcut.ico' %}">
     {% endblock %}
     {% block head_stylesheets %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static '/css/adraft.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static "bootstrap/dist/css/bootstrap.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/adraft.css" %}">
     {% endblock %}
     {% block head_stylesheets_extra %}
     {% endblock %}
     {% block head_scripts %}
     <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="{% static '/js/adraft.min.js' %}"></script>
+    <script type="text/javascript" src="{% static "jquery/dist/jquery.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/adraft.min.js" %}"></script>
     <script>
         MathJax.Hub.Config({
             tex2jax: {
@@ -42,7 +42,7 @@
     {% block head_extra %}
     {% endblock %}
 </head>
-<body class="" style="">
+<body class="" style="" ng-app="{% block ng_app %}example.app.static{% endblock %}">
 <div class="container">
     <header>
         {% block header %}
@@ -79,9 +79,9 @@
                 <li><a href="{% url "login" %}?next={{ request.path }}" >{% trans "Log in" %}</a></li>
             {% endif %}
             </ul>
-            {% endblock %}
+            {% endblock navbar_authentication  %}
         </div>
-        {% endblock %}
+        {% endblock navbar %}
     </nav>
 
     <article>
@@ -95,8 +95,10 @@
 
          <div class="row">
               <div class="col-sm-12 col-md-12">
+                  <div class="content ng-cloak" ng-controller="{% block ng_controller %}AppController{% endblock %}">
                    {% block content %}
                    {% endblock content %}
+                  </div>
               </div>
          </div>
     </article>
@@ -104,10 +106,12 @@
     <footer>
         {% block footer %}
         Copyright &copy; adrafter.pythonanywhere.com
-        {% endblock %}
+        {% endblock footer %}
     </footer>
 </div>
+
 {% block body_script_bottom %}
-{% endblock %}
+{% endblock body_script_bottom %}
+
 </body>
 </html>
