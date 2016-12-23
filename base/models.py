@@ -8,8 +8,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.deconstruct import deconstructible
 from django.template.defaultfilters import filesizeformat
-from django.core.cache import cache
-
+from django.urls import reverse
 import magic
 import markups
 
@@ -141,8 +140,11 @@ def get_upload_to(instance, filename):
 
 
 class Note(models.Model):
+    title = models.CharField(verbose_name=_('Title'), max_length=100)
+    annotation = models.CharField(verbose_name=_('Annotation'), max_length=200, blank=True)
     text = models.TextField(verbose_name=_('Text'))
-    user = models.ForeignKey(USER_MODEL, related_name='note_user', verbose_name=_('Author'))
+    html = models.TextField(verbose_name=_('HTML'), blank=True, default='')
+    user = models.ForeignKey(USER_MODEL, related_name='%(class)s_users', verbose_name=_('Author'))
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -151,9 +153,7 @@ class Note(models.Model):
         verbose_name_plural = _('Notes')
 
     def save(self, *args, **kwargs):
-        cache_key = self.get_cache_key()
-        if cache.get(cache_key) is not None:
-            self.set_cache()
+        self.html = self.convert()
         super(Note, self).save(*args, **kwargs)
 
     @staticmethod
@@ -166,17 +166,10 @@ class Note(models.Model):
             self.__markup_instance = Note.get_markup_instance()
         return self.__markup_instance
 
-    def convert_to_html(self):
+    def convert(self):
         html = self.markup.convert(self.text).get_document_body()
         html = self._sanitize(html)
         return html
-
-    @property
-    def html(self):
-        if self.pk:
-            return self.get_cached_html()
-        else:
-            return self.convert_to_html()
 
     @property
     def stylesheet(self):
@@ -186,10 +179,6 @@ class Note(models.Model):
     def javascript(self):
         return self.markup.get_javascript()
 
-    @property
-    def title(self):
-        return self.markup.get_document_title()
-
     def _sanitize(self, html):
         """ Remove all scripts from html
 
@@ -198,31 +187,8 @@ class Note(models.Model):
         """
         return re.sub(r'<script.*?</script>', '', html, flags=re.MULTILINE)
 
-    def get_cache_key(self):
-        return "{0}_{1}".format(self._meta.db_table, self.pk)
-
-    def set_cache(self):
-        """Convert text to html,set cache and return html
-
-        :return: html
-        """
-        cache_key = self.get_cache_key()
-        html = self.convert_to_html()
-        cache.set(cache_key, html)
-        return html
-
-    def get_cache(self):
-        """return html from cache
-
-        If no html in cache then set cache and return
-
-        :return: html from cache
-        """
-        cache_key = self.get_cache_key()
-        cached_html = cache.get(cache_key)
-        if cached_html is None:
-            cached_html = self.set_cache()
-        return cached_html
+    def get_absolute_url(self):
+        return reverse('base:detail', kwargs={'pk': self.pk})
 
 
 class Attachment(models.Model):
@@ -237,7 +203,6 @@ class Attachment(models.Model):
     title = models.CharField(verbose_name=_('Title'), max_length=100)
     description = models.CharField(verbose_name=_('Description'), max_length=255)
     file = models.FileField(upload_to=get_upload_to, max_length=150, validators=[validate_attachment])
-    original_filename = models.CharField()
 
     class Meta:
         verbose_name = _('Attachment')

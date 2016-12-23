@@ -1,109 +1,113 @@
 {% load staticfiles %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    {% block head_meta %}
     <meta name="language" content="ru">
     <meta name="ROBOTS" content="ALL">
-    <meta name="description" content="{% block page_description %} {% endblock %}">
-    <meta name="keywords" content="{% block page_keywords %} {% endblock %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block page_title %} {% endblock %}</title>
-
-    <link rel="icon" type="image/x-icon" href="{% static 'base/img/favicon.ico' %}">
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'base/img/shortcut.ico' %}">
-    {% block base_stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'base/css/adraft.css' %}">
     {% endblock %}
-    {% block extra_stylesheets %}
+    <meta name="description" content="{% block description %}Adraft-rst is a tool to keep organized reStructuredText pages.{% endblock %}">
+    <meta name="keywords" content="{% block keywords %}reStructuredText,page,notepad,HTML,organize,collect{% endblock %}">
+    <title>{% block head_title %}A drafter{% endblock %}</title>
+    {% block head_icon %}
+    <link rel="icon" type="image/x-icon" href="{% static '/favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static '/shortcut.ico' %}">
     {% endblock %}
-    {% block base_scripts %}
-    <script type="text/javascript" src="{% static 'base/js/adraft.min.js' %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
-    <script src="{% static 'js/bootstrap.min.js'%}"></script>
+    {% block head_stylesheets %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/adraft.css' %}">
+    {% endblock %}
+    {% block head_stylesheets_extra %}
+    {% endblock %}
+    {% block head_scripts %}
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+   </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static '/js/adraft.min.js' %}"></script>
+    <script>
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                processEscapes: true
+            }
+        });
+    </script>
     {% endblock%}
-    {% block extra_scripts %}
+    {% block head_scripts_extra %}
     {% endblock %}
-    {% block extra_head %}
+    {% block head_extra %}
     {% endblock %}
 </head>
-<body>
-    {% block body_start %}
-    {% endblock %}
+<body class="" style="">
+<div class="container">
+    <header>
+        {% block header %}
+        <h3>A drafter</h3>
+        {% endblock %}
+    </header>
 
-    {% block navbar %}
-    <div class="header navbar navbar-fixed-top navbar-default">
+    <nav class="navbar navbar-default">
+        {% block navbar %}
         <div class="container-fluid">
-
             <div class="navbar-header">
-                <div class="row">
-                    <div class="col-sm-12 col-md-12">
-                        <div class="navbar-header"><a href="{% url 'waliki_home' %}" class="navbar-brand">{{ site_name|default:"Waliki" }}</a></div>
-                        {% navbar_links %}
-                        {% block body_authentication %}
-                        <ul class="nav pull-right navbar-nav">
-                        <li><iframe src="http://ghbtns.com/github-btn.html?user=mgaitan&repo=waliki&type=watch&count=true&size=large" allowtransparency="true" frameborder="0" scrolling="0" width="160px" height="50px" style="padding-top: 10px;"></iframe>
-                        </li>
-                        {% if request.user.is_authenticated %}
-                            <li class="dropdown">
-                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                    {{ request.user.get_full_name|default:request.user.username }}
-                                     <span class="caret"></span></a>
-                                <ul role="menu" class="dropdown-menu">
-                                    <li><a href="{% url "logout" %}?next={{ request.path }}" >{% trans "Log out" %}</a></li>
-                                </ul>
-                            </li>
-                        {% else %}
-                            <li><a href="{% url "login" %}?next={{ request.path }}" >{% trans "Log in" %}</a></li>
-                        {% endif %}
-                        </ul>
+                {% block navbar_header %}
+                <a href="{% url 'base:home' %}" class="navbar-brand">{% trans "A drafter" %}</a>
+                {% endblock %}
+            </div>
+
+            {% block navbar_links %}
+            {% endblock %}
+
+            {% block navbar_authentication %}
+            <ul class="nav navbar-nav pull-right">
+            {% if request.user.is_authenticated %}
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        {{ request.user.get_full_name|default:request.user.username }}
+                         <span class="caret"></span></a>
+                    <ul role="menu" class="dropdown-menu">
+                        {% block navbar_user_menu %}
                         {% endblock %}
-                    </div>
+                        <li><a href="{% url "logout" %}?next={{ request.path }}" >{% trans "Log out" %}</a></li>
+                    </ul>
+                </li>
+            {% else %}
+                <li><a href="{% url "login" %}?next={{ request.path }}" >{% trans "Log in" %}</a></li>
+            {% endif %}
+            </ul>
+            {% endblock %}
+        </div>
+        {% endblock %}
+    </nav>
+
+    <article>
+        {% block messages %}
+            <div class="row">
+                <div class="col-lg-offset-2 col-sm-8 col-md-8">
+                    {% include "_messages.html" %}
                 </div>
             </div>
-        </div>
-    </div>
-    {% endblock %}
-
-    {% block body_contents %}
-    <div class="container body">
-        {% block body_messages %}
-           {% if messages %}
-            <div id="notices">
-              {% for message in messages %}
-                  <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
-              {% endfor %}
-            </div>
-           {% endif %}
-        {% endblock %}
-
-        {% block body_contents_before %}
-        {% endblock %}
-
-
+        {% endblock messages %}
 
          <div class="row">
-              <div class="col-lg-offset-1 col-sm-10 col-md-10">
-                   {% if page  %}
-                   <div class="page-header">
-                   {% block header %}
-                   <h1>{% block title %}{{ page.title }}{% endblock title %}</h1>
-                   {% endblock header %}
-                   </div>
-                   {% endif %}
+              <div class="col-sm-12 col-md-12">
                    {% block content %}
                    {% endblock content %}
-                   {% block extra_content %}{% endblock extra_content %}
               </div>
          </div>
-    </div>
-    {% endblock %}
+    </article>
+
     <footer>
-    {% block body_contents_after %}
-    {% endblock %}
+        {% block footer %}
+        Copyright &copy; adrafter.pythonanywhere.com
+        {% endblock %}
     </footer>
-    {% block body_script_bottom %}
-    {% endblock %}
+</div>
+{% block body_script_bottom %}
+{% endblock %}
 </body>
 </html>

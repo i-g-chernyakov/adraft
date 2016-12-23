@@ -1,8 +1,8 @@
-Django==1.10.4
-django-mptt==0.8.6
-docutils==0.12
-Markdown==2.6.7
-Markups==2.0.0
-Pillow==3.4.1
-psycopg2==2.6.2
-python-magic==0.4.12
+Django
+django-mptt
+docutils
+Markdown
+Markups
+Pillow
+psycopg2
+python-magic
