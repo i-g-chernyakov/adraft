@@ -5,4 +5,5 @@ Markdown
 Markups
 Pillow
 psycopg2
-python-magic
+djangorestframework
+django-extensions

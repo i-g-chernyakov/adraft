@@ -1,14 +1,20 @@
-clean:
-	rm -f example.sqlite
+# Minimal makefile for Sphinx documentation
+#
 
-create_database:
-	./manage.py makemigrations --noinput
-	./manage.py migrate --noinput
-	./manage.py createsuperuser --username=root --email=root@example.com --noinput
+# You can set these variables from the command line.
+SPHINXOPTS    =
+SPHINXBUILD   = sphinx-build
+SPHINXPROJ    = adraft_project
+SOURCEDIR     = source
+BUILDDIR      = build
 
-make_fixtures:
-	./manage.py create_users
-	./manage.py create_posts
-	./manage.py create_photos
+# Put it first so that "make" without argument is like "make help".
+help:
+	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-all: clean create_database make_fixtures
+.PHONY: help Makefile
+
+# Catch-all target: route all unknown targets to Sphinx using the new
+# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+%: Makefile
+	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

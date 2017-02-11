@@ -6,6 +6,10 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SECRET_KEY = '(l3-jtu8c_5$=sgh+9zme1^t-^mbq6nsi+s4x7r6esvxhyeo3v'
+DEBUG = True
+
+ALLOWED_HOSTS = []
 
 # Application definition
 
