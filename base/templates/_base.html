@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 {% load i18n %}
 <!DOCTYPE html>
 <html lang="ru">
@@ -11,23 +11,20 @@
     {% endblock %}
     <meta name="description" content="{% block description %}Adraft-rst is a tool to keep organized reStructuredText pages.{% endblock %}">
     <meta name="keywords" content="{% block keywords %}reStructuredText,page,notepad,HTML,organize,collect{% endblock %}">
-    <title>{% block head_title %}A drafter{% endblock %}</title>
+    <title>{% block head_title %}Adraft{% endblock %}</title>
     {% block head_icon %}
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'shortcut.ico' %}">
     {% endblock %}
     {% block head_stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{% static "bootstrap/dist/css/bootstrap.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "css/adraft.css" %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     {% endblock %}
     {% block head_stylesheets_extra %}
     {% endblock %}
     {% block head_scripts %}
-    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-   </script>
-    <script type="text/javascript" src="{% static "jquery/dist/jquery.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/adraft.min.js" %}"></script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script>
         MathJax.Hub.Config({
             tex2jax: {
@@ -46,7 +43,7 @@
 <div class="container">
     <header>
         {% block header %}
-        <h3>A drafter</h3>
+        <h3>Adraft</h3>
         {% endblock %}
     </header>
 
@@ -55,7 +52,7 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 {% block navbar_header %}
-                <a href="{% url 'base:home' %}" class="navbar-brand">{% trans "A drafter" %}</a>
+                <a href="{% url 'base:home' %}" class="navbar-brand">{% trans "Adraft" %}</a>
                 {% endblock %}
             </div>
 
@@ -95,9 +92,9 @@
 
          <div class="row">
               <div class="col-sm-12 col-md-12">
-                  <div class="content ng-cloak" ng-controller="{% block ng_controller %}AppController{% endblock %}">
                    {% block content %}
                    {% endblock content %}
+                  <div class="content ng-cloak" ng-controller="{% block ng_controller %}AppController{% endblock %}">
                   </div>
               </div>
          </div>
@@ -105,7 +102,7 @@
 
     <footer>
         {% block footer %}
-        Copyright &copy; adrafter.pythonanywhere.com
+        Copyright &copy; adraft.pythonanywhere.com
         {% endblock footer %}
     </footer>
 </div>

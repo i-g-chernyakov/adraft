@@ -5,6 +5,6 @@
 <div class="note_annotation"><blockquote>{{ object.annotation }}</blockquote></div>
 <a href="{% url 'base:edit' object.id %}">Edit</a>
 <div class="note_html">
-{{ object.html|safe }}
 </div>
+{{ object.html|safe }}
 {% endblock %}
