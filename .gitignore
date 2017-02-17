@@ -1,10 +1,10 @@
 .idea
-conf
-media
-adraft/local_settings.py
+conf/
+media/
+adraft/settings/local.py
+node_modules/
 __pycache__
 nohup.out
-node_modules
 *~
 .DS_Store
 *.csv
