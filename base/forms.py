@@ -1,22 +1,33 @@
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 
 from .models import Note
 
 
+CODEMIRROR = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.23.0/'
+
+
 class NoteForm(forms.ModelForm):
+    title = forms.CharField(label=_('Title'), widget=forms.TextInput(attrs={'size': '100%'}))
+    annotation = forms.CharField(label=_("Annotation"),
+                                 widget=forms.TextInput(attrs={'size': '100%'}))
 
     class Meta:
         model = Note
         fields = ['title', 'annotation', 'text']
 
     class Media:
-        js = ('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.0/codemirror.js',
-              'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.0/addon/mode/overlay.js',
-              'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.0/mode/rst/rst.js',
+        js = (''.join([CODEMIRROR, 'codemirror.min.js']),
+              ''.join([CODEMIRROR, 'addon/mode/overlay.min.js']),
+              ''.join([CODEMIRROR, 'addon/mode/xml/xml.min.js']),
+              ''.join([CODEMIRROR, 'addon/display/fullscreen.min.js']),
+              ''.join([CODEMIRROR, 'mode/rst/rst.js']),
               )
         css = {
-            'all': ('https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.0/codemirror.css',
-                    'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.0/theme/mbo.css')
+            'all': (''.join([CODEMIRROR, 'codemirror.min.css']),
+                    ''.join([CODEMIRROR, 'addon/display/fullscreen.css']),
+                    ''.join([CODEMIRROR, 'theme/mbo.css']),
+                    )
         }
 
     def __init__(self, *args, **kwargs):
