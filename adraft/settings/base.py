@@ -1,17 +1,7 @@
-"""
-Django settings for adraft project.
-"""
-
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = '(l3-jtu8c_5$=sgh+9zme1^t-^mbq6nsi+s4x7r6esvxhyeo3v'
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-# Application definition
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+SECRET_KEY = os.environ.get('ADRAFT_SECRET_KEY')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -55,16 +45,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'adraft.wsgi.application'
 
 
-# Database
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-
 # Password validation
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -99,12 +79,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-
-try:
-    from .local_settings import *
-except:
-    pass
