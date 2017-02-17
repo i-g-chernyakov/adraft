@@ -82,6 +82,8 @@
     </nav>
 
     <article>
+        {% block top %}
+        {% endblock top %}
         {% block messages %}
             <div class="row">
                 <div class="col-lg-offset-2 col-sm-8 col-md-8">
@@ -98,6 +100,8 @@
                   </div>
               </div>
          </div>
+        {% block bottom %}
+        {% endblock bottom %}
     </article>
 
     <footer>
