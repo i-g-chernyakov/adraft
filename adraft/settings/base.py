@@ -75,6 +75,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+FIXTURE_DIRS = [os.path.join(BASE_DIR, 'fixtures')]
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locales'),
+]
 
 # Static files (CSS, JavaScript, Images)
 

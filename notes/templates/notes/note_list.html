@@ -14,7 +14,10 @@
     {% endfor %}
 </ul>
 
-<div id="create_note"><a href="{% url 'notes:create' %}">Create note</a></div>
+{% if request.user.is_authenticated %}
+    <div id="create_note"><a href="{% url 'notes:create' %}">Create note</a></div>
+{% else %}
+{% endif %}
 
 {% endblock %}
 
