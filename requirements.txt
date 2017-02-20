@@ -7,4 +7,5 @@ Pillow
 psycopg2
 djangorestframework
 django-extensions
-magic
+python-magic
+
