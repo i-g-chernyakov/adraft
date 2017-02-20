@@ -5,6 +5,7 @@ media/
 adraft/settings/local.py
 node_modules/
 base/
+base
 __pycache__
 nohup.out
 *~
@@ -37,3 +38,4 @@ bower.json
 .bowerrc
 .pep8
 static/
+Vagrantfile
