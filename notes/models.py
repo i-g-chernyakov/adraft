@@ -189,7 +189,7 @@ class Note(models.Model):
         return re.sub(r'<script.*?</script>', '', html, flags=re.MULTILINE)
 
     def get_absolute_url(self):
-        return reverse('base:detail', kwargs={'pk': self.pk})
+        return reverse('notes:detail', kwargs={'pk': self.pk})
 
 
 class Attachment(models.Model):

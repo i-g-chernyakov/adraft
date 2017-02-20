@@ -22,13 +22,13 @@
         {{ field }}
     {% endfor %}
 
-    <p>Press <strong>F11</strong> when cursor is in the editor to
+    {% trans "<p>Press <strong>F11</strong> when cursor is in the editor to
     toggle full screen editing. <strong>Esc</strong> can also be used
-    to <i>exit</i> full screen editing.</p>
+    to <i>exit</i> full screen editing.</p>" %}
     <button type="submit">{% trans "Save" %}</button>
 </form>
 
-<h3>About reStructuredText</h3>
+<h3>{% trans "About reStructuredText" %}</h3>
 <ul>
     <li><a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html" class="navbar-brand">Quick reStructuredText</a></li>
 </ul>
