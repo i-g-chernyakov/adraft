@@ -1,0 +1,20 @@
+{% extends "note_base.html" %}
+
+{% load static %}
+{% load i18n %}
+
+{% block ng_app %}base.app.list{% endblock %}
+
+{% block content %}
+<ul>
+    {% for note in note_list %}
+        <li><a href="{% url 'notes:detail' note.id %}">{{ note.title }}</a></li>
+    {% empty %}
+        <li>{% trans "No notes yet" %}</li>
+    {% endfor %}
+</ul>
+
+<div id="create_note"><a href="{% url 'notes:create' %}">Create note</a></div>
+
+{% endblock %}
+

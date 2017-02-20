@@ -1,0 +1,116 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    {% block head_meta %}
+    <meta name="language" content="ru">
+    <meta name="ROBOTS" content="ALL">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% endblock %}
+    <meta name="description" content="{% block description %}Adraft-rst is a tool to keep organized reStructuredText pages.{% endblock %}">
+    <meta name="keywords" content="{% block keywords %}reStructuredText,page,notepad,HTML,organize,collect{% endblock %}">
+    <title>{% block head_title %}Adraft{% endblock %}</title>
+    {% block head_icon %}
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'shortcut.ico' %}">
+    {% endblock %}
+    {% block head_stylesheets %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    {% endblock %}
+    {% block head_stylesheets_extra %}
+    {% endblock %}
+    {% block head_scripts %}
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                processEscapes: true
+            }
+        });
+    </script>
+    {% endblock%}
+    {% block head_scripts_extra %}
+    {% endblock %}
+    {% block head_extra %}
+    {% endblock %}
+</head>
+<body class="" style="" ng-app="{% block ng_app %}example.app.static{% endblock %}">
+<div class="container">
+    <header>
+        {% block header %}
+        <h3>Adraft</h3>
+        {% endblock %}
+    </header>
+
+    <nav class="navbar navbar-default">
+        {% block navbar %}
+        <div class="container-fluid">
+            <div class="navbar-header">
+                {% block navbar_header %}
+                <a href="{% url 'base:home' %}" class="navbar-brand">{% trans "Adraft" %}</a>
+                {% endblock %}
+            </div>
+
+            {% block navbar_links %}
+            {% endblock %}
+
+            {% block navbar_authentication %}
+            <ul class="nav navbar-nav pull-right">
+            {% if request.user.is_authenticated %}
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        {{ request.user.get_full_name|default:request.user.username }}
+                         <span class="caret"></span></a>
+                    <ul role="menu" class="dropdown-menu">
+                        {% block navbar_user_menu %}
+                        {% endblock %}
+                        <li><a href="{% url "logout" %}?next={{ request.path }}" >{% trans "Log out" %}</a></li>
+                    </ul>
+                </li>
+            {% else %}
+                <li><a href="{% url "login" %}?next={{ request.path }}" >{% trans "Log in" %}</a></li>
+            {% endif %}
+            </ul>
+            {% endblock navbar_authentication  %}
+        </div>
+        {% endblock navbar %}
+    </nav>
+
+    <article>
+        {% block top %}
+        {% endblock top %}
+        {% block messages %}
+            <div class="row">
+                <div class="col-lg-offset-2 col-sm-8 col-md-8">
+                    {% include "_messages.html" %}
+                </div>
+            </div>
+        {% endblock messages %}
+
+         <div class="row">
+              <div class="col-sm-12 col-md-12">
+                   {% block content %}
+                   {% endblock content %}
+              </div>
+         </div>
+        {% block bottom %}
+        {% endblock bottom %}
+    </article>
+
+    <footer>
+        {% block footer %}
+        Copyright &copy; adraft.pythonanywhere.com
+        {% endblock footer %}
+    </footer>
+</div>
+
+{% block body_script_bottom %}
+{% endblock body_script_bottom %}
+
+</body>
+</html>

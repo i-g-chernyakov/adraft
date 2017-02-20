@@ -1,8 +1,10 @@
 .idea
+djangoshell.py
 conf/
 media/
 adraft/settings/local.py
 node_modules/
+base/
 __pycache__
 nohup.out
 *~
@@ -23,3 +25,15 @@ pep8.report
 .env
 *.sqlite
 .vagrant
+setup.py
+package.json
+nohup.out
+Makefile
+Gruntfile.coffee
+Dockerfile
+docker-compose.yml
+djangoshell.py
+bower.json
+.bowerrc
+.pep8
+static/
