@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-20 16:42+0700\n"
+"POT-Creation-Date: 2017-02-22 14:52+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
+
 #: base/forms.py:11 base/models.py:143 base/models.py:203 base/models.py:227
 #: notes/forms.py:11 notes/models.py:144 notes/models.py:204
 #: notes/models.py:228
@@ -52,7 +53,7 @@ msgstr ""
 #: base/models.py:29 notes/models.py:30
 #, python-format
 msgid "Files of type %(content_type)s are not supported."
-msgstr ""
+msgstr "Файлы типа %(content_type)s не поддерживаются."
 
 #: base/models.py:145 notes/models.py:146
 msgid "Text"
@@ -96,16 +97,16 @@ msgstr "Картинка"
 msgid "Images"
 msgstr "Картинки"
 
-#: base/templates/_base.html:55 notes/templates/_base.html:55
+#: base/templates/_base.html:55 notes/templates/_base.html:56
 msgid "Adraft"
-msgstr "Adraft"
+msgstr "Adraft (черновик)"
 
-#: base/templates/_base.html:72 notes/templates/_base.html:72
+#: base/templates/_base.html:72 notes/templates/_base.html:73
 msgid "Log out"
 msgstr "Выход"
 
 #: base/templates/_base.html:76 base/templates/registration/login.html:8
-#: notes/templates/_base.html:76 notes/templates/registration/login.html:8
+#: notes/templates/_base.html:77 notes/templates/registration/login.html:8
 msgid "Log in"
 msgstr "Вход"
 
@@ -128,6 +129,18 @@ msgstr "Вышел"
 msgid "Successfully logged out"
 msgstr "Зашел"
 
+#: notes/templates/notes/note_detail.html:14
+msgid "Edit"
+msgstr "Редактировать"
+
+#: notes/templates/notes/note_form.html:31
+msgid "About reStructuredText"
+msgstr "О reStructuredText"
+
 #: notes/templates/notes/note_list.html:13
 msgid "No notes yet"
 msgstr "Нет заметок"
+
+#: notes/templates/notes/note_list.html:18
+msgid "Create note"
+msgstr "Создать заметку"

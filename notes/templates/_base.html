@@ -40,12 +40,11 @@
     {% endblock %}
 </head>
 <body class="" style="" ng-app="{% block ng_app %}example.app.static{% endblock %}">
-<div class="container">
-    <header>
-        {% block header %}
-        <h3>Adraft</h3>
-        {% endblock %}
-    </header>
+<header>
+    {% block header %}
+    <div class="container">
+    <h3>Adraft</h3>
+    </div>
 
     <nav class="navbar navbar-default">
         {% block navbar %}
@@ -80,34 +79,52 @@
         </div>
         {% endblock navbar %}
     </nav>
+    {% endblock %}
+</header>
 
-    <article>
+<article>
+    <div class="container body">
+        <div class="row">
         {% block top %}
         {% endblock top %}
-        {% block messages %}
-            <div class="row">
+        </div>
+        <div class="row">
+                {% block messages %}
                 <div class="col-lg-offset-2 col-sm-8 col-md-8">
                     {% include "_messages.html" %}
                 </div>
-            </div>
-        {% endblock messages %}
-
-         <div class="row">
+            {% endblock messages %}
+        </div>
+        <div class="row">
               <div class="col-sm-12 col-md-12">
                    {% block content %}
                    {% endblock content %}
               </div>
          </div>
-        {% block bottom %}
-        {% endblock bottom %}
-    </article>
+         <div class="row">
+            {% block bottom %}
+            {% endblock bottom %}
+         </div>
+    </div>
+</article>
 
-    <footer>
-        {% block footer %}
-        Copyright &copy; adraft.pythonanywhere.com
-        {% endblock footer %}
-    </footer>
-</div>
+<footer>
+    {% block footer %}
+    <nav class="footer navbar navbar-default">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 hidden-xs">
+                    Copyright &copy; adraft.pythonanywhere.com
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-9">
+            </div>
+            <div class="col-md-3 col-xs-3">
+            </div>
+        </div>
+    </nav>
+    {% endblock footer %}
+</footer>
 
 {% block body_script_bottom %}
 {% endblock body_script_bottom %}
