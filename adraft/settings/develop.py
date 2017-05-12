@@ -11,4 +11,4 @@ MIDDLEWARE_CLASSES += (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
-SENDFILE_BACKEND = 'sendfile.backends.nginx'
+SENDFILE_BACKEND = 'sendfile.backends.development'

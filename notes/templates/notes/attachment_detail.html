@@ -1,0 +1,33 @@
+{% extends "note_base.html" %}
+
+{% block content %}>
+
+{% if attachment %}
+
+    <p>id: {{ attachment.id }}</p>
+    <p>user: {{ attachment.user }}</p>
+
+    {% if attachment.file %}
+        <p>Title: {{ attachment.title }}</p>
+        <p>Description: {{ attachment.description }}</p>
+    <div>
+        {% if attachment.is_image %}
+            <img src="{% url 'notes:attachment_attachment' attachment.id %}" class="img-thumbnail" alt="{{ attachment.title }}">
+        {% else %}
+            <a href="{% url 'notes:attachment_attachment' attachment.id %}">Ref</a>
+        {% endif %}
+    </div>
+    {% else %}
+        No attachment
+    {% endif %}
+
+<a href="{% url 'notes:attachment_delete' attachment.id %}">delete</a>
+<p></p>
+<a href="{% url 'notes:attachment_edit' attachment.id %}">edit</a>
+<p></p>
+<a href="{% url 'notes:attachment_index' %}">index</a>
+<p></p>
+
+{% endif %}
+
+{% endblock content %}

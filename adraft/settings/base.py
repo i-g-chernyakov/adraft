@@ -10,6 +10,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'behave_django',
     'notes',
 ]
 
@@ -101,3 +102,9 @@ DATABASES = {
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+PROTECTED_ROOT = os.path.join(MEDIA_ROOT, 'protected/')
+PUBLIC_ROOT = os.path.join(MEDIA_ROOT, 'public/')
+SENDFILE_ROOT = PROTECTED_ROOT
+SENDFILE_URL = '/protected'
+SENDFILE_BACKEND = 'sendfile.backends.simple'

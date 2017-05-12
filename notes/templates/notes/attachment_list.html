@@ -1,0 +1,14 @@
+{% extends "note_base.html" %}
+
+{% block content %}>
+
+    {% for attachment in attachments %}
+        <li><a href="{% url 'notes:attachment_detail' attachment.id %}">{{ attachment.title }} ({{ attachment.user }})</a></li>
+    {% empty %}
+        <li>No attachments yet</li>
+    {% endfor %}
+<p></p>
+    <p></p>
+<a href="{% url 'notes:attachment_create' %}">Create</a>
+
+{% endblock content %}

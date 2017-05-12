@@ -1,11 +1,7 @@
-Django
-django-mptt
-docutils
-Markdown
-Markups
-Pillow
-psycopg2
-djangorestframework
-django-extensions
-python-magic
-mysqlclient
+-r requirements.txt
+pytest
+pytest-django
+coverage
+pytest-cov
+behave
+behave-django

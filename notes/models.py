@@ -1,6 +1,7 @@
-from os import path
+import os
 from uuid import uuid4
 import re
+import imghdr
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -12,10 +13,22 @@ from django.urls import reverse
 import magic
 import markups
 
-from utils import get_class_name_plural
-
 
 USER_MODEL = getattr(settings, 'AUTH_USER_MODEL')
+PROTECTED_DIR = getattr(settings, 'PROTECTED_ROOT')
+
+
+def get_upload_to():
+    pass
+
+
+def get_class_name_plural(instance):
+    """ Return of instance
+
+    :param instance:
+    :return: plural form for class name of object
+    """
+    return '{}s'.format(instance.__class__.__name__.lower())
 
 
 @deconstructible
@@ -101,43 +114,15 @@ validate_attachment = FileValidator(min_size=10,
                                         'text/csv',
                                         'text/html',
                                         'text/plain',
+                                        'image/gif',
+                                        'image/jpeg',
+                                        'image/pjpeg',
+                                        'image/png',
+                                        'image/svg+xml',
+                                        'image/tiff',
+                                        'image/vnd.microsoft.icon',
+                                        'image/vnd.wap.bmp',
                                     ))
-
-
-validate_image = FileValidator(min_size=10,
-                               max_size=1024*1024*5,
-                               content_types=(
-                                   'image/gif',
-                                   'image/jpeg',
-                                   'image/pjpeg',
-                                   'image/png',
-                                   'image/svg+xml',
-                                   'image/tiff',
-                                   'image/vnd.microsoft.icon',
-                                   'image/vnd.wap.bmp',
-                               ))
-
-
-def get_upload_to(instance, filename):
-    """File will be uploaded to MERDIA_ROOT/user_id<user.id> or all/class_name_plural/%Y/%m/%d/uuid4
-
-    We change name of downloaded file to uuid4.
-    :param instance:
-    :param filename:
-    :return: path to upload file
-    """
-    try:
-        user = instance.user
-    except AttributeError:
-        subfolder = 'all'
-    else:
-        subfolder = 'user_id{0}'.format(user.id)
-
-    return path.join(subfolder,
-                     get_class_name_plural(instance),
-                     '%Y/%m/%d',
-                     str(uuid4()),
-                     path.splitext(filename)[-1])
 
 
 class Note(models.Model):
@@ -194,16 +179,17 @@ class Note(models.Model):
 
 class Attachment(models.Model):
     def upload_to(self, filename):
-        """Attachment will be uploaded to MEDIA_ROOT/attachments/user_<id>/<filename>
+        """Attachment will be uploaded to MEDIA_ROOT/attachments/uuid4/uuid4
 
         :return: path to attachment file
         """
-        return 'attachments/user_{0}/{1}.{2}'.format(self.user.id, uuid4(), path.splitext(filename)[-1])
+        return os.path.join(PROTECTED_DIR,
+                            'attachments/{}'.format(uuid4()))
 
     user = models.ForeignKey(USER_MODEL, related_name='attachment_user', verbose_name=_('Attachment'))
     title = models.CharField(verbose_name=_('Title'), max_length=100)
     description = models.CharField(verbose_name=_('Description'), max_length=255)
-    file = models.FileField(upload_to=get_upload_to, max_length=150, validators=[validate_attachment])
+    file = models.FileField(upload_to=upload_to, max_length=150, validators=[validate_attachment])
 
     class Meta:
         verbose_name = _('Attachment')
@@ -222,16 +208,8 @@ class Attachment(models.Model):
         self.file.delete(save=False)
         super(Attachment, self).delete(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('notes:attachment_detail', args=(self.pk,))
 
-class Image(models.Model):
-    user = models.ForeignKey(USER_MODEL, related_name='image_user', verbose_name=_('Attachment'))
-    title = models.CharField(verbose_name=_('Title'), max_length=100)
-    description = models.CharField(verbose_name=_('Description'), max_length=255)
-    image = models.ImageField(upload_to=get_upload_to, validators=[validate_image])
-
-    class Meta:
-        verbose_name = _('Image')
-        verbose_name_plural = _('Images')
-
-    def __str__(self):
-        return self.title
+    def is_image(self):
+        return imghdr.what(self.file.path)

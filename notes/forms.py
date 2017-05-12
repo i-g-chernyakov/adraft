@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Note
+from .models import Note, Attachment
 
 
 CODEMIRROR = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.23.0/'
@@ -43,3 +43,18 @@ class NoteForm(forms.ModelForm):
             instance.text = self.cleaned_data['text']
 
         return instance
+
+
+class AttachmentForm(forms.ModelForm):
+    file = forms.FileField()
+
+    class Meta:
+        model = Attachment
+        fields = ['title', 'description']
+
+
+class AttachmentEditForm(forms.ModelForm):
+
+    class Meta:
+        model = Attachment
+        fields = ['title', 'description']

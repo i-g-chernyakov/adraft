@@ -9,3 +9,4 @@ djangorestframework
 django-extensions
 python-magic
 mysqlclient
+fabric3

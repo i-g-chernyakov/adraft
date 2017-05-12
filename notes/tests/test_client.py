@@ -1,7 +1,9 @@
 from django.test import TestCase, Client
 
+# from .models import Note
 
-class NoteMethodTests(TestCase):
+
+class NoteMainpageTests(TestCase):
     def setUp(self):
         self.client = Client()
 

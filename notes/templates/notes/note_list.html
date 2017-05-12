@@ -16,6 +16,7 @@
 
 {% if request.user.is_authenticated %}
     <div id="create_note"><a href="{% url 'notes:create' %}">{% trans "Create note" %}</a></div>
+    <div><a href="{% url 'notes:attachment_index' %}">{% trans "Attachments" %}</a></div>
 {% else %}
 {% endif %}
 
