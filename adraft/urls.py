@@ -7,12 +7,12 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from adraft.views import profile
+from apps.notes.views import ListView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls')),
-    url(r'^accounts/profile/', profile, name='profile'),
+    url(r'^accounts/profile/', ListView.as_view(), name='profile'),
     url(r'^', include('notes.urls')),
 ]
 

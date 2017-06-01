@@ -10,7 +10,7 @@ if [[ $1w != 'novenv' ]]; then
 
     echo "Trying to use virtual environment adraft "
 
-    workon adraft
+    . venv/bin/activate
 
 else
 
