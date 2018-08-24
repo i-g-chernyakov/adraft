@@ -17,5 +17,5 @@ Collect and systematize notes, make sketches, draw schemes and compose drafts.
 Authors
 -------
 
-* Igor Chernyakov <i.g.chernyakov@yandex.ru>
+* I.G. Chernyakov <i.g.chernyakov@yandex.ru>
 

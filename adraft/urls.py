@@ -1,19 +1,16 @@
-"""adraft URL Configuration
+# -*- coding: utf-8 -*-
 
-
-"""
-from django.conf.urls import include, url
-from django.contrib import admin
 from django.conf import settings
+from django.contrib import admin
+from django.urls import path, include
 from django.conf.urls.static import static
 
-from apps.notes.views import ListView
+from adraft.notes.views import NoteListView
+
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^accounts/', include('django.contrib.auth.urls')),
-    url(r'^accounts/profile/', ListView.as_view(), name='profile'),
-    url(r'^', include('notes.urls')),
+    path("admin/", admin.site.urls),
+    path("", include('notes.urls')),
 ]
 
 if settings.DEBUG:

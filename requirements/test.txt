@@ -1,5 +1,0 @@
--r prod.txt
-pytest
-pytest-django
-coverage
-pytest-cov
